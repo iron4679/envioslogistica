@@ -1,0 +1,25 @@
+package com.grupo7.tpi.envioslogistica.controller;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.grupo7.tpi.envioslogistica.service.EnvioService;
+import com.grupo7.tpi.envioslogistica.dto.CotizacionRequest;
+import com.grupo7.tpi.envioslogistica.dto.CotizacionResponse;
+
+@RestController
+@RequestMapping("/shipping-calculator")
+public class ShippingController {
+
+    @Autowired
+    private EnvioService envioService;
+
+    @PostMapping
+    public ResponseEntity<CotizacionResponse> cotizar(@RequestBody CotizacionRequest request) {
+        CotizacionResponse response = envioService.cotizar(request);
+        return ResponseEntity.ok(response);
+    }
+}

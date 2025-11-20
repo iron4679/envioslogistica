@@ -1,0 +1,15 @@
+com\grupo7\tpi\envioslogistica\repository\EnvioRepository.class
+com\grupo7\tpi\envioslogistica\EnvioslogisticaApplication.class
+com\grupo7\tpi\envioslogistica\dto\CotizacionRequest.class
+com\grupo7\tpi\envioslogistica\dto\EnvioRequest.class
+com\grupo7\tpi\envioslogistica\controller\ShippingController.class
+com\grupo7\tpi\envioslogistica\model\Envio.class
+com\grupo7\tpi\envioslogistica\service\EnvioService.class
+com\grupo7\tpi\envioslogistica\dto\TrackingResponse$TrackingItem.class
+com\grupo7\tpi\envioslogistica\dto\EstadoRequest.class
+com\grupo7\tpi\envioslogistica\dto\CotizacionResponse.class
+com\grupo7\tpi\envioslogistica\repository\TrackingRepository.class
+com\grupo7\tpi\envioslogistica\model\Tracking.class
+com\grupo7\tpi\envioslogistica\dto\EnvioResponse.class
+com\grupo7\tpi\envioslogistica\controller\EnvioController.class
+com\grupo7\tpi\envioslogistica\dto\TrackingResponse.class

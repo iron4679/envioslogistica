@@ -1,5 +1,5 @@
-DROP DATABASE envioslogistica;
-CREATE DATABASE envioslogistica;
+CREATE DATABASE IF NOT EXISTS envioslogistica;
+USE envioslogistica;
 
 CREATE TABLE envio (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,

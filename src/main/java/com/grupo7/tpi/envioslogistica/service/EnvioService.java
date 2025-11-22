@@ -88,7 +88,7 @@ public class EnvioService {
         Envio envio = envioRepository.findById(envioId)
             .orElseThrow(() -> new RuntimeException("Envio no encontrado"));
 
-        List<Tracking> historial = trackingRepository.findByEnvioIdOrderByTimestampAsc(envioId);
+        List<Tracking> historial = trackingRepository.findByEnvioOrderByTimestampAsc(envio);
 
         List<TrackingResponse.TrackingItem> items = historial.stream()
             .map(t -> new TrackingResponse.TrackingItem(t.getTimestamp(), t.getEstado()))

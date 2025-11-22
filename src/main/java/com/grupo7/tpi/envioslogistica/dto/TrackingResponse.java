@@ -2,11 +2,35 @@ package com.grupo7.tpi.envioslogistica.dto;
 
 import java.util.List;
 import java.time.LocalDateTime;
+import com.grupo7.tpi.envioslogistica.model.Envio;
 
 public class TrackingResponse {
-    private String id;
-    private String estado;
+    private String id; // ej: s345
+    private String estado; // estado actual
     private List<TrackingItem> historial;
+
+    public TrackingResponse() {}
+
+    public TrackingResponse(Envio envio) {
+        this.id = "s" + String.format("%03d", envio.getId());
+        this.estado = envio.getEstado();
+        this.historial = envio.getHistorial().stream()
+            .map(t -> new TrackingItem(t.getTimestamp(), t.getEstado()))
+            .toList();
+    }
+
+    public static class TrackingItem {
+        private String t; // timestamp
+        private String e; // estado
+
+        public TrackingItem(LocalDateTime timestamp, String estado) {
+            this.t = timestamp.toString() + "Z"; // formato ISO con Z
+            this.e = estado;
+        }
+
+        public String getT() { return t; }
+        public String getE() { return e; }
+    }
 
     public String getId() {
         return id;
@@ -32,21 +56,5 @@ public class TrackingResponse {
         this.historial = historial;
     }
 
-    public static class TrackingItem {
-        private LocalDateTime t;
-        private String e;
-        
-        public LocalDateTime getT() {
-            return t;
-        }
-        public void setT(LocalDateTime t) {
-            this.t = t;
-        }
-        public String getE() {
-            return e;
-        }
-        public void setE(String e) {
-            this.e = e;
-        }
-    }
+    
 }

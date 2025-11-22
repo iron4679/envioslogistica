@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface EnvioRepository extends JpaRepository<Envio, String> {
+public interface EnvioRepository extends JpaRepository<Envio, Long> {
     Optional<Envio> findByTracking(String tracking);
 }

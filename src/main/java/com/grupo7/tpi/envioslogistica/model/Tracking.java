@@ -2,6 +2,8 @@ package com.grupo7.tpi.envioslogistica.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 
@@ -10,7 +12,9 @@ import java.time.LocalDateTime;
 @Entity
 public class Tracking {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // si usás AUTO_INCREMENT en SQL
+    private Long id;
+
     private String estado;
     private LocalDateTime timestamp;
 
@@ -18,11 +22,11 @@ public class Tracking {
     @JoinColumn(name = "envio_id")
     private Envio envio;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

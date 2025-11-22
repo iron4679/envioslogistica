@@ -31,12 +31,12 @@ public class EnvioController {
     }
 
     @GetMapping("/{id}/tracking")
-    public ResponseEntity<TrackingResponse> verTracking(@PathVariable String id) {
+    public ResponseEntity<TrackingResponse> verTracking(@PathVariable Long id) {
         return ResponseEntity.ok(envioService.obtenerTracking(id));
     }
 
     @PatchMapping("/{id}/tracking")
-    public ResponseEntity<Void> actualizarEstado(@PathVariable String id, @RequestBody EstadoRequest estado) {
+    public ResponseEntity<Void> actualizarEstado(@PathVariable Long id, @RequestBody EstadoRequest estado) {
         envioService.actualizarEstado(id, estado.getEstado());
         return ResponseEntity.ok().build();
     }

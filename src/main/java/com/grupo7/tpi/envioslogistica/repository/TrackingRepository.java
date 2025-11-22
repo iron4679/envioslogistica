@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TrackingRepository extends JpaRepository<Tracking, String> {
-    List<Tracking> findByEnvioIdOrderByTimestampAsc(String envioId);
+public interface TrackingRepository extends JpaRepository<Tracking, Long> {
+    List<Tracking> findByEnvioIdOrderByTimestampAsc(Long envioId);
 }

@@ -17,7 +17,6 @@ import com.grupo7.tpi.envioslogistica.dto.EnvioResponse;
 import com.grupo7.tpi.envioslogistica.model.Tracking;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,25 +25,6 @@ import java.util.stream.Collectors;
 */
 @Service
 public class EnvioService {
-    private static int contadorEnvios = 1;
-    private static int contadorTracking = 1;
-
-    /*
-        * Método para generar un ID único para el envío
-        * @return
-    */
-    private String generarId() {
-        return String.format("s%03d", contadorEnvios++);
-    }
-
-    /*
-        * Método para generar un código de tracking único
-        * @return
-    */
-    private String generarTracking() {
-        return String.format("TRK-%04d", contadorTracking++);
-    }
-
     @Autowired
     private EnvioRepository envioRepository; // Repositorio para envíos
 
@@ -76,28 +56,27 @@ public class EnvioService {
     */
     public EnvioResponse crearEnvio(EnvioRequest request) {
         Envio envio = new Envio();
-        envio.setId(generarId());
         envio.setOrdenId(request.getOrdenId());
         envio.setDireccion(request.getDireccion());
         envio.setModalidad(request.getModalidad());
         envio.setEstado("EN_PREPARACION");
-        envio.setTracking(generarTracking());
         envio.setFechaCreacion(LocalDateTime.now());
+
         envioRepository.save(envio);
 
+        // Crear primer tracking
         Tracking tracking = new Tracking();
-        tracking.setId(UUID.randomUUID().toString());
-        tracking.setEnvio(envio);
         tracking.setEstado("EN_PREPARACION");
         tracking.setTimestamp(LocalDateTime.now());
+        tracking.setEnvio(envio);
         trackingRepository.save(tracking);
 
-        return new EnvioResponse(
-            envio.getId(),
-            envio.getOrdenId(),
-            envio.getEstado(),
-            envio.getTracking()
-        );
+        // Actualizar referencia al tracking actual
+        envio.setTrackingActual(tracking);
+        envioRepository.save(envio);
+
+        // Devolver DTO con IDs formateados
+        return new EnvioResponse(envio.getId(), envio.getOrdenId(), envio.getEstado(), tracking.getId());
     }
 
     /*
@@ -105,20 +84,18 @@ public class EnvioService {
         * @param envioId
         * @return
     */
-    public TrackingResponse obtenerTracking(String envioId) {
+    public TrackingResponse obtenerTracking(Long envioId) {
         Envio envio = envioRepository.findById(envioId)
             .orElseThrow(() -> new RuntimeException("Envio no encontrado"));
 
         List<Tracking> historial = trackingRepository.findByEnvioIdOrderByTimestampAsc(envioId);
-        List<TrackingResponse.TrackingItem> items = historial.stream().map(t -> {
-            TrackingResponse.TrackingItem item = new TrackingResponse.TrackingItem();
-            item.setT(t.getTimestamp());
-            item.setE(t.getEstado());
-            return item;
-        }).collect(Collectors.toList());
 
+        List<TrackingResponse.TrackingItem> items = historial.stream()
+            .map(t -> new TrackingResponse.TrackingItem(t.getTimestamp(), t.getEstado()))
+            .collect(Collectors.toList());
+        
         TrackingResponse response = new TrackingResponse();
-        response.setId(envio.getId());
+        response.setId("s" + String.format("%03d", envio.getId()));
         response.setEstado(envio.getEstado());
         response.setHistorial(items);
         return response;
@@ -129,20 +106,15 @@ public class EnvioService {
         * @param envioId
         * @param nuevoEstado
     */
-    public void actualizarEstado(String envioId, String nuevoEstado) {
+    public void actualizarEstado(Long envioId, String nuevoEstado) {
         Envio envio = envioRepository.findById(envioId)
             .orElseThrow(() -> new RuntimeException("Envio no encontrado"));
 
-        // Validar transición si querés
-        envio.setEstado(nuevoEstado);
-        envioRepository.save(envio);
-
         Tracking tracking = new Tracking();
-        tracking.setId(UUID.randomUUID().toString());
-        tracking.setEnvio(envio);
         tracking.setEstado(nuevoEstado);
         tracking.setTimestamp(LocalDateTime.now());
-        trackingRepository.save(tracking);
+        tracking.setEnvio(envio);
+        trackingRepository.save(tracking); //  ID generado por DB
     }
 
     /*

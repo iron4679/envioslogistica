@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Tracking {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // si usás AUTO_INCREMENT en SQL
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String estado;

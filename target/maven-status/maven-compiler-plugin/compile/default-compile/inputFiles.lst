@@ -7,6 +7,10 @@ D:\iron4\Documents\Google Drive\Mi unidad\Programación orientada a objetos\Java
 D:\iron4\Documents\Google Drive\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\dto\EstadoRequest.java
 D:\iron4\Documents\Google Drive\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\dto\TrackingResponse.java
 D:\iron4\Documents\Google Drive\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\EnvioslogisticaApplication.java
+D:\iron4\Documents\Google Drive\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\exception\DuplicateOrdenException.java
+D:\iron4\Documents\Google Drive\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\exception\EnvioNotFoundException.java
+D:\iron4\Documents\Google Drive\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\exception\GlobalExceptionHandler.java
+D:\iron4\Documents\Google Drive\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\exception\OrdenNoPagadaException.java
 D:\iron4\Documents\Google Drive\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\model\Envio.java
 D:\iron4\Documents\Google Drive\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\model\Tracking.java
 D:\iron4\Documents\Google Drive\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\repository\EnvioRepository.java

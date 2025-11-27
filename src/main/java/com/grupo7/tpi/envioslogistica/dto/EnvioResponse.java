@@ -6,6 +6,9 @@ public class EnvioResponse {
     private String estado;
     private String trackingActual;
 
+    // Constructor vacío (necesario para Jackson)
+    public EnvioResponse() {}
+
     public EnvioResponse(Long id, String ordenId, String estado, Long trackingId) {
         this.id = "s" + String.format("%03d", id);           // ej: s001
         this.ordenId = ordenId;

@@ -20,4 +20,6 @@ public interface EnvioRepository extends JpaRepository<Envio, Long> {
 
     // Buscar por tracking actual
     Optional<Envio> findByTrackingActual(Tracking tracking);
+
+    boolean existsByOrdenId(String ordenId);
 }

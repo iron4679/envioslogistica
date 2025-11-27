@@ -15,6 +15,8 @@ import com.grupo7.tpi.envioslogistica.service.EnvioService;
 import com.grupo7.tpi.envioslogistica.dto.EnvioRequest;
 import com.grupo7.tpi.envioslogistica.dto.EstadoRequest;
 import com.grupo7.tpi.envioslogistica.dto.TrackingResponse;
+import com.grupo7.tpi.envioslogistica.exception.DuplicateOrdenException;
+import com.grupo7.tpi.envioslogistica.exception.OrdenNoPagadaException;
 import com.grupo7.tpi.envioslogistica.dto.EnvioResponse;
 
 @RestController
@@ -27,17 +29,22 @@ public class EnvioController {
     @PostMapping
     public ResponseEntity<EnvioResponse> crearEnvio(@RequestBody EnvioRequest request) {
         EnvioResponse response = envioService.crearEnvio(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201 con body
     }
+
 
     @GetMapping("/{id}/tracking")
     public ResponseEntity<TrackingResponse> verTracking(@PathVariable Long id) {
-        return ResponseEntity.ok(envioService.obtenerTracking(id));
+        TrackingResponse tracking = envioService.obtenerTracking(id);
+        if (tracking == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404
+        }
+        return ResponseEntity.ok(tracking); // 200
     }
 
     @PatchMapping("/{id}/tracking")
-    public ResponseEntity<Void> actualizarEstado(@PathVariable Long id, @RequestBody EstadoRequest estado) {
-        envioService.actualizarEstado(id, estado.getEstado());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<TrackingResponse> actualizarEstado(@PathVariable Long id, @RequestBody EstadoRequest estado) {
+        TrackingResponse tracking = envioService.actualizarEstado(id, estado.getEstado());
+        return ResponseEntity.ok(tracking); // 200 OK
     }
 }

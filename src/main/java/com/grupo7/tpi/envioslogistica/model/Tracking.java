@@ -22,6 +22,8 @@ public class Tracking {
     @JoinColumn(name = "envio_id")
     private Envio envio;
 
+    public Tracking() {}
+
     public Long getId() {
         return id;
     }

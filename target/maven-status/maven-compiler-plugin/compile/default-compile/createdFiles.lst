@@ -6,6 +6,7 @@ com\grupo7\tpi\envioslogistica\controller\ShippingController.class
 com\grupo7\tpi\envioslogistica\model\Envio.class
 com\grupo7\tpi\envioslogistica\service\EnvioService.class
 com\grupo7\tpi\envioslogistica\dto\TrackingResponse$TrackingItem.class
+com\grupo7\tpi\envioslogistica\exception\GlobalExceptionHandler.class
 com\grupo7\tpi\envioslogistica\dto\EstadoRequest.class
 com\grupo7\tpi\envioslogistica\dto\CotizacionResponse.class
 com\grupo7\tpi\envioslogistica\repository\TrackingRepository.class

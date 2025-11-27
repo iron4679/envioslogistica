@@ -12,12 +12,16 @@ import com.grupo7.tpi.envioslogistica.dto.CotizacionRequest;
 import com.grupo7.tpi.envioslogistica.dto.CotizacionResponse;
 import com.grupo7.tpi.envioslogistica.dto.EnvioRequest;
 import com.grupo7.tpi.envioslogistica.dto.TrackingResponse;
+import com.grupo7.tpi.envioslogistica.exception.DuplicateOrdenException;
+import com.grupo7.tpi.envioslogistica.exception.EnvioNotFoundException;
+import com.grupo7.tpi.envioslogistica.exception.OrdenNoPagadaException;
 import com.grupo7.tpi.envioslogistica.model.Envio;
 import com.grupo7.tpi.envioslogistica.dto.EnvioResponse;
 import com.grupo7.tpi.envioslogistica.model.Tracking;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /*
@@ -55,6 +59,21 @@ public class EnvioService {
         * @param request
     */
     public EnvioResponse crearEnvio(EnvioRequest request) {
+    /*
+        // Validar si la orden está pagada
+        if (!ordenService.estaPagada(request.getOrdenId())) {
+            throw new OrdenNoPagadaException("La orden " + request.getOrdenId() + " no está pagada");
+        }
+    */
+        
+        // Si ya existe, devolver el existente en vez de lanzar excepción
+        Optional<Envio> existente = envioRepository.findByOrdenId(request.getOrdenId());
+        if (existente.isPresent()) {
+            Envio envio = existente.get();
+            Tracking tracking = envio.getTrackingActual();
+            return new EnvioResponse(envio.getId(), envio.getOrdenId(), envio.getEstado(), tracking.getId());
+        }
+
         Envio envio = new Envio();
         envio.setOrdenId(request.getOrdenId());
         envio.setDireccion(request.getDireccion());
@@ -73,6 +92,7 @@ public class EnvioService {
 
         // Actualizar referencia al tracking actual
         envio.setTrackingActual(tracking);
+        envio.getHistorial().add(tracking);
         envioRepository.save(envio);
 
         // Devolver DTO con IDs formateados
@@ -106,15 +126,29 @@ public class EnvioService {
         * @param envioId
         * @param nuevoEstado
     */
-    public void actualizarEstado(Long envioId, String nuevoEstado) {
+    public TrackingResponse actualizarEstado(Long envioId, String nuevoEstado) {
         Envio envio = envioRepository.findById(envioId)
-            .orElseThrow(() -> new RuntimeException("Envio no encontrado"));
+            .orElseThrow(() -> new EnvioNotFoundException("Envio con id " + envioId + " no encontrado"));
 
+        // Actualizar estado del envío
+        envio.setEstado(nuevoEstado);
+
+        // Crear nuevo tracking
         Tracking tracking = new Tracking();
         tracking.setEstado(nuevoEstado);
         tracking.setTimestamp(LocalDateTime.now());
         tracking.setEnvio(envio);
-        trackingRepository.save(tracking); //  ID generado por DB
+
+        trackingRepository.save(tracking);
+
+        // Actualizar referencia al tracking actual y el historial
+        envio.setTrackingActual(tracking);
+        envio.getHistorial().add(tracking);
+
+        envioRepository.save(envio);
+
+        // 👇 devolver DTO con historial
+        return new TrackingResponse(envio);
     }
 
     /*

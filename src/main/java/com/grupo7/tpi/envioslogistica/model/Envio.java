@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.CascadeType;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,12 +27,15 @@ public class Envio {
 
     // Relación uno a muchos: historial completo
     @OneToMany(mappedBy = "envio", cascade = CascadeType.ALL)
-    private List<Tracking> historial;
+    private List<Tracking> historial = new ArrayList<>();
 
     // Relación uno a uno: tracking actual
     @OneToOne
     @JoinColumn(name = "tracking_id")
     private Tracking trackingActual;
+
+    // Constructor vacío requerido por JPA
+    public Envio() {}
 
     public Long getId() {
         return id;

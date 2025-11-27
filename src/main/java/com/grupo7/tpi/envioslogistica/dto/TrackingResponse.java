@@ -2,8 +2,11 @@ package com.grupo7.tpi.envioslogistica.dto;
 
 import java.util.List;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.grupo7.tpi.envioslogistica.model.Envio;
 
+@JsonPropertyOrder({ "id", "estado", "historial" })
 public class TrackingResponse {
     private String id; // ej: s345
     private String estado; // estado actual
@@ -19,6 +22,7 @@ public class TrackingResponse {
             .toList();
     }
 
+    @JsonPropertyOrder({ "t", "e" })
     public static class TrackingItem {
         private String t; // timestamp
         private String e; // estado
@@ -55,6 +59,4 @@ public class TrackingResponse {
     public void setHistorial(List<TrackingItem> historial) {
         this.historial = historial;
     }
-
-    
 }

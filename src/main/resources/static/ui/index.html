@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Envios Logística - Demo UI</title>
+</head>
+<body>
+  <h1>Prueba de Envíos</h1>
+
+  <!-- Estado de conexión -->
+  <div id="conexion" style="padding:10px; border:1px solid #ccc; margin-bottom:20px;">
+    Estado de conexión: <span id="conexionEstado">Verificando...</span>
+  </div>
+
+  <!-- Crear envío -->
+  <h2>Crear envío</h2>
+  <form id="crearEnvioForm">
+    <label>Orden ID: <input type="text" id="ordenId" required></label><br>
+    <label>Dirección: <input type="text" id="direccion" required></label><br>
+    <label>Modalidad:
+      <select id="modalidad" required>
+        <option value="NORMAL">NORMAL</option>
+        <option value="EXPRESS">EXPRESS</option>
+        <option value="RETIRO_EN_SUCURSAL">RETIRO_EN_SUCURSAL</option>
+      </select>
+    </label><br>
+    <button type="submit">Crear</button>
+  </form>
+  <pre id="crearEnvioResult"></pre>
+
+  <!-- Actualizar estado -->
+  <h2>Actualizar estado</h2>
+  <form id="actualizarEstadoForm">
+    <label>ID Envío: <input type="text" id="envioId" placeholder="s345" required></label><br>
+    <label>Nuevo estado:
+      <select id="nuevoEstado" required>
+        <option value="PENDIENTE">PENDIENTE</option>
+        <option value="EN_PREPARACION">EN_PREPARACION</option>
+        <option value="EN_TRANSITO">EN_TRANSITO</option>
+        <option value="ENTREGADO">ENTREGADO</option>
+        <option value="CANCELADO">CANCELADO</option>
+      </select>
+    </label><br>
+    <button type="submit">Actualizar</button>
+  </form>
+  <pre id="actualizarEstadoResult"></pre>
+
+  <!-- Cotizar envío -->
+  <h2>Cotizar envío</h2>
+  <form id="cotizarForm">
+    <label>Código Postal: <input type="text" id="cp" value="2760" required></label><br>
+    <label>Peso (kg): <input type="number" step="0.01" id="peso" value="1.2" required></label><br>
+    <label>Volumen (m³): <input type="number" step="0.01" id="volumen" value="0.01" required></label><br>
+    <label>Modalidad:
+      <select id="modalidadCotizar" required>
+        <option value="NORMAL">NORMAL</option>
+        <option value="EXPRESS" selected>EXPRESS</option>
+        <option value="RETIRO_EN_SUCURSAL">RETIRO_EN_SUCURSAL</option>
+      </select>
+    </label><br>
+    <button type="submit">Cotizar</button>
+  </form>
+  <pre id="cotizarResult"></pre>
+
+  <!-- Ver tracking -->
+  <h2>Ver tracking de envío</h2>
+  <form id="verTrackingForm">
+    <label>ID Envío: <input type="text" id="trackingId" placeholder="001" required></label><br>
+    <button type="submit">Ver tracking</button>
+  </form>
+  <pre id="verTrackingResult"></pre>
+
+  <script>
+    const baseUrl = "http://localhost:8080";
+
+    // Verificar conexión
+    async function verificarConexion() {
+      try {
+        const response = await fetch(baseUrl + "/shipments", { method: "OPTIONS" });
+        document.getElementById("conexionEstado").textContent =
+          response.ok ? "Conectado ✅" : "Error de conexión ❌";
+      } catch {
+        document.getElementById("conexionEstado").textContent = "Servidor no disponible ❌";
+      }
+    }
+    verificarConexion();
+
+    // Crear envío
+    document.getElementById("crearEnvioForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const ordenId = document.getElementById("ordenId").value;
+      const direccion = document.getElementById("direccion").value;
+      const modalidad = document.getElementById("modalidad").value;
+
+      try {
+        const response = await fetch(baseUrl + "/shipments", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ordenId, direccion, modalidad })
+        });
+        const data = await response.json();
+        document.getElementById("crearEnvioResult").textContent = JSON.stringify(data, null, 2);
+      } catch {
+        document.getElementById("crearEnvioResult").textContent = "Error de conexión ❌";
+      }
+    });
+
+    // Actualizar estado
+    document.getElementById("actualizarEstadoForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const envioId = document.getElementById("envioId").value;
+      const nuevoEstado = document.getElementById("nuevoEstado").value;
+
+      try {
+        const response = await fetch(baseUrl + `/shipments/${envioId}/tracking`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ estado: nuevoEstado })
+        });
+        const data = await response.json();
+        document.getElementById("actualizarEstadoResult").textContent = JSON.stringify(data, null, 2);
+      } catch {
+        document.getElementById("actualizarEstadoResult").textContent = "Error de conexión ❌";
+      }
+    });
+
+    // Cotizar envío
+    document.getElementById("cotizarForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const cp = document.getElementById("cp").value;
+      const peso = parseFloat(document.getElementById("peso").value);
+      const volumen = parseFloat(document.getElementById("volumen").value);
+      const modalidad = document.getElementById("modalidadCotizar").value;
+
+      try {
+        const response = await fetch(baseUrl + "/shipping-calculator", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cp, peso, volumen, modalidad })
+        });
+        const data = await response.json();
+        document.getElementById("cotizarResult").textContent = JSON.stringify(data, null, 2);
+      } catch {
+        document.getElementById("cotizarResult").textContent = "Error de conexión ❌";
+      }
+    });
+
+    // Ver tracking
+    document.getElementById("verTrackingForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("trackingId").value;
+
+      try {
+        const response = await fetch(baseUrl + `/shipments/${id}/tracking`);
+        const data = await response.json();
+        document.getElementById("verTrackingResult").textContent = JSON.stringify(data, null, 2);
+      } catch {
+        document.getElementById("verTrackingResult").textContent = "Error de conexión ❌";
+      }
+    });
+  </script>
+</body>
+</html>

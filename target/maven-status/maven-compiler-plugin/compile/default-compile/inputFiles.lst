@@ -13,6 +13,9 @@ G:\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\jav
 G:\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\exception\OrdenNoPagadaException.java
 G:\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\model\Envio.java
 G:\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\model\Tracking.java
+G:\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\observer\NotificacionesObserver.java
+G:\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\observer\Observer.java
+G:\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\observer\OrdenesObserver.java
 G:\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\repository\EnvioRepository.java
 G:\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\repository\TrackingRepository.java
 G:\Mi unidad\Programación orientada a objetos\Java\envioslogistica\src\main\java\com\grupo7\tpi\envioslogistica\service\EnvioService.java

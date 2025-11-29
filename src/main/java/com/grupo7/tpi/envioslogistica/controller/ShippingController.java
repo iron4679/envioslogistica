@@ -10,13 +10,24 @@ import com.grupo7.tpi.envioslogistica.service.EnvioService;
 import com.grupo7.tpi.envioslogistica.dto.CotizacionRequest;
 import com.grupo7.tpi.envioslogistica.dto.CotizacionResponse;
 
+/**
+ * Controlador REST para calcular cotizaciones de envíos.
+ */
 @RestController
 @RequestMapping("/shipping-calculator")
 public class ShippingController {
 
+    /**
+     * Servicio de envíos inyectado para manejar la lógica de negocio.
+     */
     @Autowired
     private EnvioService envioService;
 
+    /**
+     * Calcula una cotización de envío.
+     * @param request
+     * @return
+     */
     @PostMapping
     public ResponseEntity<CotizacionResponse> cotizar(@RequestBody CotizacionRequest request) {
         CotizacionResponse response = envioService.cotizar(request);

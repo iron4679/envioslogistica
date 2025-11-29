@@ -3,6 +3,9 @@ package com.grupo7.tpi.envioslogistica.observer;
 import com.grupo7.tpi.envioslogistica.model.Envio;
 import com.grupo7.tpi.envioslogistica.model.Tracking;
 
+/**
+ * Interfaz para los observers que reaccionan a cambios en el estado de los envíos.
+ */
 public interface Observer {
     /**
      * Método que se ejecuta cuando cambia el estado de un envío.

@@ -1,3 +1,7 @@
+/*
+    * Controlador REST para gestionar envíos y su tracking.
+    * Proporciona endpoints para crear envíos, ver el estado de tracking y actualizar el estado del envío.
+*/
 package com.grupo7.tpi.envioslogistica.controller;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -17,13 +21,25 @@ import com.grupo7.tpi.envioslogistica.dto.EstadoRequest;
 import com.grupo7.tpi.envioslogistica.dto.TrackingResponse;
 import com.grupo7.tpi.envioslogistica.dto.EnvioResponse;
 
+/**
+ * Controlador REST para gestionar envíos y su tracking.
+ */
+
 @RestController
 @RequestMapping("/shipments")
 public class EnvioController {
 
+    /**
+     * Servicio de envíos inyectado para manejar la lógica de negocio.
+     */
     @Autowired
     private EnvioService envioService;
 
+    /**
+     * Crea un nuevo envío.
+     * @param request
+     * @return
+     */
     @PostMapping
     public ResponseEntity<EnvioResponse> crearEnvio(@RequestBody EnvioRequest request) {
         EnvioResponse response = envioService.crearEnvio(request);
@@ -31,6 +47,11 @@ public class EnvioController {
     }
 
 
+    /**
+     * Obtiene el estado de tracking de un envío por su ID.
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}/tracking")
     public ResponseEntity<TrackingResponse> verTracking(@PathVariable Long id) {
         TrackingResponse tracking = envioService.obtenerTracking(id);
@@ -40,6 +61,12 @@ public class EnvioController {
         return ResponseEntity.ok(tracking); // 200
     }
 
+    /**
+     * Actualiza el estado de un envío.
+     * @param id
+     * @param estado
+     * @return
+     */
     @PatchMapping("/{id}/tracking")
     public ResponseEntity<TrackingResponse> actualizarEstado(@PathVariable Long id, @RequestBody EstadoRequest estado) {
         TrackingResponse tracking = envioService.actualizarEstado(id, estado.getEstado());

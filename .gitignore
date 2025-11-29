@@ -23,3 +23,6 @@
 hs_err_pid*
 replay_pid*
 target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+
+# Ignorar archivo de variables de entorno
+devcontainer.env

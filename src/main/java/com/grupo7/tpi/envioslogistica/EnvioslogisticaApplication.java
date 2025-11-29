@@ -32,11 +32,9 @@ public class EnvioslogisticaApplication {
 
     /**
      * Inicializa y registra los observers en el servicio de envíos.
-     * <p>
      * Este método se ejecuta al arrancar la aplicación y asegura que
      * los observers de órdenes y notificaciones estén activos para
      * recibir actualizaciones de estado.
-     * </p>
      *
      * @param envioService el servicio de envíos donde se registran los observers
      * @return un {@link CommandLineRunner} que agrega los observers al servicio

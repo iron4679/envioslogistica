@@ -1,0 +1,4 @@
+var interfacecom_1_1grupo7_1_1tpi_1_1envioslogistica_1_1repository_1_1_tracking_repository =
+[
+    [ "findByEnvioOrderByTimestampAsc", "interfacecom_1_1grupo7_1_1tpi_1_1envioslogistica_1_1repository_1_1_tracking_repository.html#ad94c4d7fb171ceb2a5c27c2dc19df195", null ]
+];

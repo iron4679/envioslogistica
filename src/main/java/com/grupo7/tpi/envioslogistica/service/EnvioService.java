@@ -12,17 +12,17 @@ import com.grupo7.tpi.envioslogistica.dto.CotizacionRequest;
 import com.grupo7.tpi.envioslogistica.dto.CotizacionResponse;
 import com.grupo7.tpi.envioslogistica.dto.EnvioRequest;
 import com.grupo7.tpi.envioslogistica.dto.TrackingResponse;
-import com.grupo7.tpi.envioslogistica.exception.DuplicateOrdenException;
 import com.grupo7.tpi.envioslogistica.exception.EnvioNotFoundException;
-import com.grupo7.tpi.envioslogistica.exception.OrdenNoPagadaException;
 import com.grupo7.tpi.envioslogistica.model.Envio;
 import com.grupo7.tpi.envioslogistica.dto.EnvioResponse;
 import com.grupo7.tpi.envioslogistica.model.Tracking;
+import com.grupo7.tpi.envioslogistica.observer.Observer;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 /*
     * Servicio para gestionar envíos y tracking
@@ -35,7 +35,38 @@ public class EnvioService {
     @Autowired
     private TrackingRepository trackingRepository; // Repositorio para tracking
 
-    /*
+    private List<Observer> observers = new ArrayList<>();
+
+    /**
+     * @brief Registra un nuevo observador en el servicio de envíos.
+     *
+     * Este método permite que otros módulos (por ejemplo, Órdenes o Notificaciones)
+     * se suscriban a los cambios de estado de los envíos. Cada observador agregado
+     * será notificado automáticamente cuando se produzca un cambio de estado.
+     *
+     * @param o El observador que se desea registrar.
+     */
+    public void addObserver(Observer o) {
+        observers.add(o);
+    }
+
+    /**
+     * @brief Notifica a todos los observadores registrados sobre un cambio de estado.
+     *
+     * Este método se invoca internamente cada vez que un envío cambia de estado.
+     * Se pasa tanto el objeto @c Envio como el @c Tracking asociado al cambio,
+     * de modo que los observadores puedan reaccionar con toda la información disponible.
+     *
+     * @param envio    El envío cuyo estado ha cambiado.
+     * @param tracking El registro de tracking creado para reflejar el cambio de estado.
+     */
+    private void notifyObservers(Envio envio, Tracking tracking) {
+        for (Observer o : observers) {
+            o.update(envio, tracking);
+        }
+    }
+
+    /**
      * Método para cotizar un envío
      * @param request
      * @return
@@ -46,7 +77,7 @@ public class EnvioService {
         return new CotizacionResponse(costo, eta);
     }
 
-    /*
+    /**
         * Constructor de EnvioService
     */
     public EnvioService(EnvioRepository envioRepository, TrackingRepository trackingRepository) {
@@ -54,7 +85,7 @@ public class EnvioService {
         this.trackingRepository = trackingRepository; // Asignar el repositorio de tracking
     }
 
-    /*
+    /**
         * Método para crear un nuevo envío
         * @param request
     */
@@ -95,11 +126,14 @@ public class EnvioService {
         envio.getHistorial().add(tracking);
         envioRepository.save(envio);
 
+        // Notificar observadores
+        notifyObservers(envio, tracking);
+
         // Devolver DTO con IDs formateados
         return new EnvioResponse(envio.getId(), envio.getOrdenId(), envio.getEstado(), tracking.getId());
     }
 
-    /*
+    /**
         * Método para obtener el tracking de un envío
         * @param envioId
         * @return
@@ -121,7 +155,7 @@ public class EnvioService {
         return response;
     }
 
-    /*
+    /**
         * Método para actualizar el estado de un envío
         * @param envioId
         * @param nuevoEstado
@@ -147,11 +181,14 @@ public class EnvioService {
 
         envioRepository.save(envio);
 
+        // Notificar observadores
+        notifyObservers(envio, tracking);
+
         // 👇 devolver DTO con historial
         return new TrackingResponse(envio);
     }
 
-    /*
+    /**
         * Método para calcular el costo del envío
         * @param r
         * @return
@@ -160,7 +197,7 @@ public class EnvioService {
         return (int)(r.getPeso() * 1000);
     }
 
-    /*
+    /**
         * Método para calcular el ETA del envío
         * @param r
         * @return

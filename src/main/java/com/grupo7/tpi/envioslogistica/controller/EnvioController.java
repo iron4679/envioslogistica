@@ -15,8 +15,6 @@ import com.grupo7.tpi.envioslogistica.service.EnvioService;
 import com.grupo7.tpi.envioslogistica.dto.EnvioRequest;
 import com.grupo7.tpi.envioslogistica.dto.EstadoRequest;
 import com.grupo7.tpi.envioslogistica.dto.TrackingResponse;
-import com.grupo7.tpi.envioslogistica.exception.DuplicateOrdenException;
-import com.grupo7.tpi.envioslogistica.exception.OrdenNoPagadaException;
 import com.grupo7.tpi.envioslogistica.dto.EnvioResponse;
 
 @RestController

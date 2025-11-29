@@ -9,6 +9,8 @@ CREATE TABLE envio (
     estado VARCHAR(20) NOT NULL,
     tracking_id BIGINT NULL,
     fecha_creacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    usuario_id VARCHAR(50) NOT NULL,
+    email_destino VARCHAR(255) NOT NULL,
     CONSTRAINT chk_estado CHECK (estado IN ('PENDIENTE', 'EN_PREPARACION', 'EN_TRANSITO', 'ENTREGADO', 'CANCELADO')),
     CONSTRAINT chk_modalidad CHECK (modalidad IN ('NORMAL', 'EXPRESS', 'RETIRO_EN_SUCURSAL'))
 );

@@ -60,9 +60,9 @@ public class EnvioService {
      * @param envio    El envío cuyo estado ha cambiado.
      * @param tracking El registro de tracking creado para reflejar el cambio de estado.
      */
-    private void notifyObservers(Envio envio, Tracking tracking) {
+    private void notifyObservers(Envio envio, Tracking tracking, String usuarioId, String emailDestino) {
         for (Observer o : observers) {
-            o.update(envio, tracking);
+            o.update(envio, tracking, usuarioId, emailDestino);
         }
     }
 
@@ -112,6 +112,10 @@ public class EnvioService {
         envio.setEstado("EN_PREPARACION");
         envio.setFechaCreacion(LocalDateTime.now());
 
+        envio.setUsuarioId(request.getUsuarioId());
+        envio.setEmailDestino(request.getEmailDestino());
+
+
         envioRepository.save(envio);
 
         // Crear primer tracking
@@ -127,7 +131,7 @@ public class EnvioService {
         envioRepository.save(envio);
 
         // Notificar observadores
-        notifyObservers(envio, tracking);
+        notifyObservers(envio, tracking, request.getUsuarioId(), request.getEmailDestino());
 
         // Devolver DTO con IDs formateados
         return new EnvioResponse(envio.getId(), envio.getOrdenId(), envio.getEstado(), tracking.getId());
@@ -182,7 +186,7 @@ public class EnvioService {
         envioRepository.save(envio);
 
         // Notificar observadores
-        notifyObservers(envio, tracking);
+        notifyObservers(envio, tracking, envio.getUsuarioId(), envio.getEmailDestino());
 
         // 👇 devolver DTO con historial
         return new TrackingResponse(envio);

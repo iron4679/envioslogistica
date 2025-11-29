@@ -4,6 +4,10 @@ public class EnvioRequest {
     private String ordenId;
     private String direccion;
     private String modalidad;
+
+    // Campos adicionales solo para notificaciones
+    private String usuarioId;
+    private String emailDestino;
     
     public String getOrdenId() {
         return ordenId;
@@ -22,5 +26,17 @@ public class EnvioRequest {
     }
     public void setModalidad(String modalidad) {
         this.modalidad = modalidad;
+    }
+    public String getUsuarioId() {
+        return usuarioId;
+    }
+    public void setUsuarioId(String usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+    public String getEmailDestino() {
+        return emailDestino;
+    }
+    public void setEmailDestino(String emailDestino) {
+        this.emailDestino = emailDestino;
     }
 }

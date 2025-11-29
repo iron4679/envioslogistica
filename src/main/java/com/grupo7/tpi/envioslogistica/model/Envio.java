@@ -25,6 +25,10 @@ public class Envio {
     private String estado;
     private LocalDateTime fechaCreacion;
 
+    private String usuarioId;
+    private String emailDestino;
+
+
     // Relación uno a muchos: historial completo
     @OneToMany(mappedBy = "envio", cascade = CascadeType.ALL)
     private List<Tracking> historial = new ArrayList<>();
@@ -99,5 +103,19 @@ public class Envio {
 
     public void setTrackingActual(Tracking trackingActual) {
         this.trackingActual = trackingActual;
-    }    
+    }
+
+    public String getUsuarioId() {
+        return usuarioId;
+    }
+    public void setUsuarioId(String usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public String getEmailDestino() {
+        return emailDestino;
+    }
+    public void setEmailDestino(String emailDestino) {
+        this.emailDestino = emailDestino;
+    }
 }

@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_envios
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: grupo7POO
+      MYSQL_DATABASE: envioslogistica
+      MYSQL_USER: envioslogistica_user
+      MYSQL_PASSWORD: grupo7poo
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./envioslogistica.sql:/docker-entrypoint-initdb.d/envioslogistica.sql
+
+  envioslogistica:
+    build: .
+    container_name: envios_app
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/envioslogistica?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+      DB_USERNAME: envioslogistica_user
+      DB_PASSWORD: grupo7poo
+      SERVER_PORT: 8070
+      NOTIFICACIONES_PORT: 8082
+      ORDENES_PORT: 8081
+    ports:
+      - "8070:8070"
+
+volumes:
+  mysql_data:

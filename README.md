@@ -1,2 +1,2 @@
 # UI de prueba
-http://localhost:8080/ui/index.html
+http://localhost:8070/ui/index.html

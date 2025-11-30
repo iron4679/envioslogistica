@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   mysql:
     image: mysql:8.0
@@ -15,22 +13,27 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./envioslogistica.sql:/docker-entrypoint-initdb.d/envioslogistica.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   envioslogistica:
     build: .
     container_name: envios_app
     restart: always
     depends_on:
-      - mysql
-    environment:
-      DB_URL: jdbc:mysql://mysql:3306/envioslogistica?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
-      DB_USERNAME: envioslogistica_user
-      DB_PASSWORD: grupo7poo
-      SERVER_PORT: 8070
-      NOTIFICACIONES_PORT: 8082
-      ORDENES_PORT: 8081
+      mysql:
+        condition: service_healthy
+    # Cargar variables desde devcontainer.env
+    env_file:
+      - devcontainer.env
     ports:
       - "8070:8070"
+    # Montar el keystore SSL (solo en el server)
+    #volumes:
+    #  - /etc/letsencrypt/live/poo2025.unsada.edu.ar:/etc/letsencrypt/live/poo2025.unsada.edu.ar:ro
 
 volumes:
   mysql_data:

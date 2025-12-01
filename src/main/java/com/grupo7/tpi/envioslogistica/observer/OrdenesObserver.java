@@ -36,6 +36,13 @@ public class OrdenesObserver implements Observer {
 
         HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
 
-        restTemplate.exchange(url, HttpMethod.PATCH, request, Void.class);
+        try {
+            // Intentar PATCH
+            restTemplate.exchange(url, HttpMethod.PATCH, request, Void.class);
+        } catch (Exception ex) {
+            System.err.println("[Órdenes] PATCH no soportado, probando con PUT...");
+            // Fallback a PUT si PATCH falla
+            restTemplate.exchange(url, HttpMethod.PUT, request, Void.class);
+        }
     }
 }

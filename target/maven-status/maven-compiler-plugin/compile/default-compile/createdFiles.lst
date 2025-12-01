@@ -21,4 +21,5 @@ com\grupo7\tpi\envioslogistica\config\ObserversRegistrar.class
 com\grupo7\tpi\envioslogistica\dto\TrackingResponse$TrackingItem.class
 com\grupo7\tpi\envioslogistica\exception\GlobalExceptionHandler.class
 com\grupo7\tpi\envioslogistica\repository\TrackingRepository.class
+com\grupo7\tpi\envioslogistica\config\WebConfig.class
 com\grupo7\tpi\envioslogistica\controller\EnvioController.class

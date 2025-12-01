@@ -35,6 +35,12 @@ public class EnvioController {
     @Autowired
     private EnvioService envioService;
 
+    //  HEALTH CHECK
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("OK");
+    }
+    
     /**
      * Crea un nuevo envío.
      * @param request

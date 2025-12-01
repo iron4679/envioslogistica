@@ -71,12 +71,12 @@
   <pre id="verTrackingResult"></pre>
 
   <script>
-    const baseUrl = "http://localhost:8080";
+    const baseUrl = "http://localhost:8070";
 
     // Verificar conexión
     async function verificarConexion() {
       try {
-        const response = await fetch(baseUrl + "/shipments", { method: "OPTIONS" });
+        const response = await fetch(baseUrl + "/shipments/health");
         document.getElementById("conexionEstado").textContent =
           response.ok ? "Conectado ✅" : "Error de conexión ❌";
       } catch {

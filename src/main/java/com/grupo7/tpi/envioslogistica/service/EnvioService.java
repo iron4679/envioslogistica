@@ -131,7 +131,11 @@ public class EnvioService {
         envioRepository.save(envio);
 
         // Notificar observadores
-        notifyObservers(envio, tracking, request.getUsuarioId(), request.getEmailDestino());
+        try {
+            notifyObservers(envio, tracking, envio.getUsuarioId(), envio.getEmailDestino());
+        } catch (Exception e) {
+            System.out.println("[Observer] Error al notificar, ignorando: " + e.getMessage());
+        }
 
         // Devolver DTO con IDs formateados
         return new EnvioResponse(envio.getId(), envio.getOrdenId(), envio.getEstado(), tracking.getId());
@@ -186,7 +190,11 @@ public class EnvioService {
         envioRepository.save(envio);
 
         // Notificar observadores
-        notifyObservers(envio, tracking, envio.getUsuarioId(), envio.getEmailDestino());
+        try {
+            notifyObservers(envio, tracking, envio.getUsuarioId(), envio.getEmailDestino());
+        } catch (Exception e) {
+            System.out.println("[Observer] Error al notificar, ignorando: " + e.getMessage());
+        }
 
         // 👇 devolver DTO con historial
         return new TrackingResponse(envio);

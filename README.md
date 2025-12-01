@@ -37,7 +37,7 @@ docker compose down -v
 ```
 
 ### UI de prueba
-http://localhost:8070/ui/index.html
+https://poo2025.unsada.edu.ar:8070/
 
 ### Documentación
 

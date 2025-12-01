@@ -42,12 +42,12 @@ http://localhost:8070/ui/index.html
 
 ## Ejemplos de uso
 ### Cotizar envío
-Endpoint: /shipping-calculator
-Método: POST
-Body:
+- Endpoint: /shipping-calculator
+- Método: POST
+- Body:
     {"cp":"2760","peso":1.2,"volumen":0.01,"modalidad":"EXPRESS"}
-Códigos: 200, 422.
-Response:
+- Códigos: 200, 422.
+- Response:
     {"costo":1200,"etaDias":2}
 
 ### Crear envío (post-pago)

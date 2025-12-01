@@ -39,6 +39,11 @@ docker compose down -v
 ### UI de prueba
 http://localhost:8070/ui/index.html
 
+### Documentación
+
+La documentación técnica se generó con Doxygen.
+Puede abrir el archivo index.html dentro de la carpeta Documentacion → html.
+
 
 ## Ejemplos de uso
 ### Cotizar envío

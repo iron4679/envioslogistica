@@ -28,7 +28,7 @@ services:
         condition: service_healthy
     # Cargar variables desde devcontainer.env
     env_file:
-      - devcontainer.env
+      - .env
     ports:
       - "8070:8070"
     # Montar el keystore SSL (solo en el server)

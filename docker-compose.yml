@@ -32,8 +32,9 @@ services:
     ports:
       - "8070:8070"
     # Montar el keystore SSL (solo en el server)
-    #volumes:
-    #  - /etc/letsencrypt/live/poo2025.unsada.edu.ar:/etc/letsencrypt/live/poo2025.unsada.edu.ar:ro
+    
+    volumes:
+      - /etc/letsencrypt/live/poo2025.unsada.edu.ar:/etc/letsencrypt/live/poo2025.unsada.edu.ar:ro
 
 volumes:
   mysql_data:
